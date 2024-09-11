@@ -228,25 +228,37 @@ footer {
   margin-right: 20px;
   width: 300px;
   height: 300px;
-  overflow: hidden;
+  overflow: hidden ;
   background: linear-gradient(to bottom, #87CEEB, #87CEFA); /* Sky blue background */
   position: relative;
 }
+.cloud{
+  position:absolute;
+  top:0px;
+  left:20px;
+  width: 150px;
+  height:70px;
 
+  z-index: 10;
+  background-image: url(../images/cloud.png);
+  background-size: cover;
+  background-position: top right;
+}
 .plane {
   position: absolute;
   top: 50%;
   left: -100px;
   width: 100px;
-  height: 50px;
-  background-color: gray;
-  border-radius: 20px;
+  height: 100px;
   transform: scale(0.8);
   animation: flyPlane 5s linear infinite;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+ 
+  background-image: url(../images/plane.png);
+  background-size: cover;
+  background-position: top right;
 }
 
-.plane::before {
+.planeo::before {
   content: "";
   position: absolute;
   top: 15px;
@@ -257,7 +269,7 @@ footer {
   border-radius: 10px;
 }
 
-.plane::after {
+.planeo::after {
   content: "";
   position: absolute;
   top: 20px;
@@ -270,14 +282,24 @@ footer {
 
 @keyframes flyPlane {
   0% {
-      left: -100px;
-      transform: translateY(-50px) rotate(-5deg);
+      left: -50px;
+      transform: translateY(50px) rotate(-5deg);
+  }
+  25% {
+    left: 100Px;
+      transform: translateY(20px) rotate(-20deg);
   }
   50% {
-      transform: translateY(50px) rotate(5deg);
+      left: 200px;
+      transform: translateY(-20px) rotate(-30deg);
+  }
+  
+  75%{
+    left:300px;
+    transform: translateY(-50px) rotate(-30deg);
   }
   100% {
-      left: 100vw;
-      transform: translateY(-50px) rotate(-5deg);
-  }
+    left: 200px;
+    transform: translateY(-230px) rotate(-120deg);
+}
 }
