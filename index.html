@@ -137,6 +137,28 @@
                 default:
                     System.out.println("Invalid choice, please try again.");
             }
+              private static void createBooking() {
+        System.out.println("Enter customer ID: ");
+        int customerId = scan.nextInt();
+        System.out.println("Enter train number: ");
+        int trainNumber = scan.nextInt();
+        scan.nextLine();
+        System.out.println("Enter seat numbers: ");
+        String seatNumbers = scan.nextLine();
+        System.out.println("Enter fare: ");
+        int fare = scan.nextInt();
+        scan.nextLine();
+        System.out.println("Enter booking status: ");
+        String bookingStatus = scan.nextLine();
+
+        Booking newBooking = new Booking(defaultBookingId++, customerId, trainNumber, seatNumbers, fare, bookingStatus);
+        if (bookingIndex < bookings.length) {
+            bookings[bookingIndex++] = newBooking;
+            System.out.println("Booking created successfully with ID: " + newBooking.getBookingId());
+        } else {
+            System.out.println("Booking limit reached!");
+        }
+    }
         }</p>
           
           </section>
