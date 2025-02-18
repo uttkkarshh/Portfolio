@@ -159,7 +159,45 @@
             System.out.println("Booking limit reached!");
         }
     }
-        }</p>
+        } 
+            
+    private static void updateBooking() {
+        System.out.println("Enter booking ID to update: ");
+        int bookingId = scan.nextInt();
+        scan.nextLine();
+        for (int i = 0; i < bookingIndex; i++) {
+            if (bookings[i].getBookingId() == bookingId) {
+                System.out.println("Enter new booking status: ");
+                String status = scan.nextLine();
+                bookings[i].setBookingStatus(status);
+                System.out.println("Booking updated successfully.");
+                return;
+            }
+        }
+        System.out.println("Booking ID not found.");
+    }
+
+    private static void deleteBooking() {
+        System.out.println("Enter booking ID to delete: ");
+        int bookingId = scan.nextInt();
+        scan.nextLine();
+        for (int i = 0; i < bookingIndex; i++) {
+            if (bookings[i].getBookingId() == bookingId) {
+                bookings[i] = bookings[--bookingIndex];
+                System.out.println("Booking deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Booking ID not found.");
+    }
+
+    private static void viewAllBookings() {
+        System.out.println("List of all bookings:");
+        for (int i = 0; i < bookingIndex; i++) {
+            System.out.println("Booking ID: " + bookings[i].getBookingId());
+        }
+    }
+        </p>
           
           </section>
 
