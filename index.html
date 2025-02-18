@@ -94,7 +94,50 @@
 
           <section>
             <h3>Samrat Ashok Institute of Technology</h3>
-            <p>B. Tech in Computer Science Engineering</p>
+            <p>B. Tech in Computer Science Engineeringwhile (true) {
+            System.out.println("\nUser Menu");
+            System.out.println("1. Create Booking");
+            System.out.println("2. Update Booking");
+            System.out.println("3. Delete Booking");
+            System.out.println("4. View All Bookings");
+            System.out.println("5. Update User");
+            System.out.println("6. Delete User");
+            System.out.println("7. Get All Trains");
+            System.out.println("8. Logout");
+            System.out.print("Enter your choice: ");
+            
+            int choice = scan.nextInt();
+            scan.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Creating booking...");
+                    break;
+                case 2:
+                    System.out.println("Updating booking...");
+                    break;
+                case 3:
+                    System.out.println("Deleting booking...");
+                    break;
+                case 4:
+                    System.out.println("Viewing all bookings...");
+                    break;
+                case 5:
+                    System.out.println("Updating user...");
+                    break;
+                case 6:
+                    System.out.println("Deleting user...");
+                    break;
+                case 7:
+                    System.out.println("Fetching all trains...");
+                    break;
+                case 8:
+                    System.out.println("Logging out...");
+                    return;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+            }
+        }</p>
           
           </section>
 
