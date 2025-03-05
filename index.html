@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -197,6 +197,108 @@
             System.out.println("Booking ID: " + bookings[i].getBookingId());
         }
     }
+
+
+
+
+
+          hellllllllllllllll
+          @Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    // Register user
+    public User registerUser(User user) {
+        return userRepository.save(user);
+    }
+
+    // Authenticate user
+    public boolean authenticate(String email, String password) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent() && user.get().getPassword().equals(password);
+    }
+
+    // Get user by ID
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // Update user
+    public User updateUser(Long id, User userDetails) {
+        User user = getUserById(id);
+        user.setUserName(userDetails.getUserName());
+        user.setEmail(userDetails.getEmail());
+        user.setAddress(userDetails.getAddress());
+        user.setPhoneNumber(userDetails.getPhoneNumber());
+        return userRepository.save(user);
+    }
+
+    // Get user bookings
+    public List<Booking> getUserBookings(Long id) {
+        return bookingRepository.findByUserId(id);
+    }
+
+    // Delete user
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    // Register User
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User savedUser = userService.registerUser(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    // Login User
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+        boolean isAuthenticated = userService.authenticate(email, password);
+        if (isAuthenticated) {
+            return ResponseEntity.ok("Login successful");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
+    // Get User by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    // Update User
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        User updatedUser = userService.updateUser(id, userDetails);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    // Get Bookings by User ID
+    @GetMapping("/{id}/bookings")
+    public ResponseEntity<List<Booking>> getUserBookings(@PathVariable Long id) {
+        List<Booking> bookings = userService.getUserBookings(id);
+        return ResponseEntity.ok(bookings);
+    }
+
+    // Delete User
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully");
+    }
+}
         </p>
           
           </section>
