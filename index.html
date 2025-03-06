@@ -298,6 +298,110 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+} 
+
+
+
+      ///heeeellllllllll22222222222222
+      @RestController
+@RequestMapping("/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+    // Book a ticket
+    @PostMapping("/book")
+    public ResponseEntity<Booking> bookTicket(@RequestBody Booking booking) {
+        Booking savedBooking = bookingService.bookTicket(booking);
+        return ResponseEntity.ok(savedBooking);
+    }
+
+    // Cancel a booking
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<String> cancelBooking(@PathVariable Long id) {
+        bookingService.cancelBooking(id);
+        return ResponseEntity.ok("Booking canceled successfully");
+    }
+
+    // Update booking details
+    @PutMapping("/{id}")
+    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking updatedBooking) {
+        Booking booking = bookingService.updateBooking(id, updatedBooking);
+        return ResponseEntity.ok(booking);
+    }
+
+    // Get booking by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Booking> getBookingById(@PathVariable Long id) {
+        Booking booking = bookingService.getBookingById(id);
+        return ResponseEntity.ok(booking);
+    }
+
+    // Get all bookings
+    @GetMapping
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        List<Booking> bookings = bookingService.getAllBookings();
+        return ResponseEntity.ok(bookings);
+    }
+
+    // Delete a booking
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return ResponseEntity.ok("Booking deleted successfully");
+    }
+}
+      heellllllll3333333333333
+      @Service
+public class BookingService {
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TrainRepository trainRepository;
+
+    // Book a ticket
+    public Booking bookTicket(Booking booking) {
+        return bookingRepository.save(booking);
+    }
+
+    // Cancel booking (update status)
+    public void cancelBooking(Long id) {
+        Booking booking = getBookingById(id);
+        booking.setBookingStatus("CANCELLED");
+        bookingRepository.save(booking);
+    }
+
+    // Update booking details
+    public Booking updateBooking(Long id, Booking updatedBooking) {
+        Booking booking = getBookingById(id);
+        booking.setSeatNumber(updatedBooking.getSeatNumber());
+        booking.setSeatNumbers(updatedBooking.getSeatNumbers());
+        booking.setFare(updatedBooking.getFare());
+        booking.setBookingStatus(updatedBooking.getBookingStatus());
+        return bookingRepository.save(booking);
+    }
+
+    // Get booking by ID
+    public Booking getBookingById(Long id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    }
+
+    // Get all bookings
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    // Delete booking
+    public void deleteBooking(Long id) {
+        bookingRepository.deleteById(id);
+    }
 }
         </p>
           
