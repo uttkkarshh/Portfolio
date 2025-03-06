@@ -1,4 +1,4 @@
-7<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -97,70 +97,12 @@
             <p>B. Tech in Computer Science Engineeringwhile (true) {
             System.out.println("\nUser Menu");
             System.out.println("1. Create Booking");
-            System.out.println("2. Update Booking");
-            System.out.println("3. Delete Booking");
-            System.out.println("4. View All Bookings");
-            System.out.println("5. Update User");
-            System.out.println("6. Delete User");
-            System.out.println("7. Get All Trains");
-            System.out.println("8. Logout");
-            System.out.print("Enter your choice: ");
-            
-            int choice = scan.nextInt();
-            scan.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 1:
-                    System.out.println("Creating booking...");
-                    break;
-                case 2:
-                    System.out.println("Updating booking...");
-                    break;
-                case 3:
-                    System.out.println("Deleting booking...");
-                    break;
-                case 4:
-                    System.out.println("Viewing all bookings...");
-                    break;
-                case 5:
-                    System.out.println("Updating user...");
-                    break;
-                case 6:
-                    System.out.println("Deleting user...");
-                    break;
-                case 7:
-                    System.out.println("Fetching all trains...");
-                    break;
-                case 8:
-                    System.out.println("Logging out...");
-                    return;
-                default:
-                    System.out.println("Invalid choice, please try again.");
+                bookings[i].setBookingStatus(status);
+                System.out.println("Booking updated successfully.");
+                return;
             }
-              private static void createBooking() {
-        System.out.println("Enter customer ID: ");
-        int customerId = scan.nextInt();
-        System.out.println("Enter train number: ");
-        int trainNumber = scan.nextInt();
-        scan.nextLine();
-        System.out.println("Enter seat numbers: ");
-        String seatNumbers = scan.nextLine();
-        System.out.println("Enter fare: ");
-        int fare = scan.nextInt();
-        scan.nextLine();
-        System.out.println("Enter booking status: ");
-        String bookingStatus = scan.nextLine();
-
-        Booking newBooking = new Booking(defaultBookingId++, customerId, trainNumber, seatNumbers, fare, bookingStatus);
-        if (bookingIndex < bookings.length) {
-            bookings[bookingIndex++] = newBooking;
-            System.out.println("Booking created successfully with ID: " + newBooking.getBookingId());
-        } else {
-            System.out.println("Booking limit reached!");
         }
-    }
-        } 
-            
     private static void updateBooking() {
         System.out.println("Enter booking ID to update: ");
         int bookingId = scan.nextInt();
@@ -323,84 +265,103 @@ public class BookingController {
         bookingService.cancelBooking(id);
         return ResponseEntity.ok("Booking canceled successfully");
     }
+/////heeelllll33333376464738384763
+@RestController
+@RequestMapping("/trains")
+public class TrainController {
 
-    // Update booking details
-    @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking updatedBooking) {
-        Booking booking = bookingService.updateBooking(id, updatedBooking);
-        return ResponseEntity.ok(booking);
+    @Autowired
+    private TrainService trainService;
+
+    // Add a new train
+    @PostMapping
+    public ResponseEntity<Train> addTrain(@RequestBody Train train) {
+        Train savedTrain = trainService.addTrain(train);
+        return ResponseEntity.ok(savedTrain);
     }
 
-    // Get booking by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable Long id) {
-        Booking booking = bookingService.getBookingById(id);
-        return ResponseEntity.ok(booking);
+    // Get train by train number
+    @GetMapping("/{trainNumber}")
+    public ResponseEntity<Train> getTrainByNumber(@PathVariable Long trainNumber) {
+        Train train = trainService.getTrainByNumber(trainNumber);
+        return ResponseEntity.ok(train);
     }
 
-    // Get all bookings
+    // Get all trains
     @GetMapping
-    public ResponseEntity<List<Booking>> getAllBookings() {
-        List<Booking> bookings = bookingService.getAllBookings();
-        return ResponseEntity.ok(bookings);
+    public ResponseEntity<List<Train>> getAllTrains() {
+        List<Train> trains = trainService.getAllTrains();
+        return ResponseEntity.ok(trains);
     }
 
-    // Delete a booking
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
-        return ResponseEntity.ok("Booking deleted successfully");
+    // Update train details
+    @PutMapping("/{trainNumber}")
+    public ResponseEntity<Train> updateTrain(@PathVariable Long trainNumber, @RequestBody Train updatedTrain) {
+        Train train = trainService.updateTrain(trainNumber, updatedTrain);
+        return ResponseEntity.ok(train);
+    }
+
+    // Delete a train
+    @DeleteMapping("/{trainNumber}")
+    public ResponseEntity<String> deleteTrain(@PathVariable Long trainNumber) {
+        trainService.deleteTrain(trainNumber);
+        return ResponseEntity.ok("Train deleted successfully");
+    }
+
+    // Update available seats (e.g., after booking/canceling)
+    @PutMapping("/{trainNumber}/update-seats")
+    public ResponseEntity<Train> updateAvailableSeats(@PathVariable Long trainNumber, @RequestParam int seats) {
+        Train train = trainService.updateAvailableSeats(trainNumber, seats);
+        return ResponseEntity.ok(train);
     }
 }
-      heellllllll3333333333333
+
+      //heellllll7263535262828
       @Service
-public class BookingService {
-
-    @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+public class TrainService {
 
     @Autowired
     private TrainRepository trainRepository;
 
-    // Book a ticket
-    public Booking bookTicket(Booking booking) {
-        return bookingRepository.save(booking);
+    // Add a new train
+    public Train addTrain(Train train) {
+        return trainRepository.save(train);
     }
 
-    // Cancel booking (update status)
-    public void cancelBooking(Long id) {
-        Booking booking = getBookingById(id);
-        booking.setBookingStatus("CANCELLED");
-        bookingRepository.save(booking);
+    // Get train by train number
+    public Train getTrainByNumber(Long trainNumber) {
+        return trainRepository.findById(trainNumber)
+                .orElseThrow(() -> new RuntimeException("Train not found"));
     }
 
-    // Update booking details
-    public Booking updateBooking(Long id, Booking updatedBooking) {
-        Booking booking = getBookingById(id);
-        booking.setSeatNumber(updatedBooking.getSeatNumber());
-        booking.setSeatNumbers(updatedBooking.getSeatNumbers());
-        booking.setFare(updatedBooking.getFare());
-        booking.setBookingStatus(updatedBooking.getBookingStatus());
-        return bookingRepository.save(booking);
+    // Get all trains
+    public List<Train> getAllTrains() {
+        return trainRepository.findAll();
     }
 
-    // Get booking by ID
-    public Booking getBookingById(Long id) {
-        return bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    // Update train details
+    public Train updateTrain(Long trainNumber, Train updatedTrain) {
+        Train train = getTrainByNumber(trainNumber);
+        train.setTrainName(updatedTrain.getTrainName());
+        train.setOriginStation(updatedTrain.getOriginStation());
+        train.setDestinationStation(updatedTrain.getDestinationStation());
+        train.setDepartureTime(updatedTrain.getDepartureTime());
+        train.setArrivalTime(updatedTrain.getArrivalTime());
+        train.setNumberOfSeats(updatedTrain.getNumberOfSeats());
+        train.setAvailableSeats(updatedTrain.getAvailableSeats());
+        return trainRepository.save(train);
     }
 
-    // Get all bookings
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    // Delete a train
+    public void deleteTrain(Long trainNumber) {
+        trainRepository.deleteById(trainNumber);
     }
 
-    // Delete booking
-    public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
+    // Update available seats
+    public Train updateAvailableSeats(Long trainNumber, int seats) {
+        Train train = getTrainByNumber(trainNumber);
+        train.setAvailableSeats(seats);
+        return trainRepository.save(train);
     }
 }
         </p>
